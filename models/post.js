@@ -10,34 +10,36 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.User,{
+      this.belongsTo(models.User, {
         foreignKey: "channel",
         targetKey: "channel",
-    });
-    this.belongsTo(models.User,{
-      foreignKey: "userimage",
-      targetKey: "userimage",
-  });
-  this.hasMany(models.Comment,{
-    foreignKey: "postId",
-    sourceKey: "postId",
-});
-  this.hasMany(models.like,{
-    foreignKey: "postId",
-    sourceKey: "postId",
-});
+      });
+      this.belongsTo(models.User, {
+        foreignKey: "userimage",
+        targetKey: "userimage",
+      });
+      this.hasMany(models.Comment, {
+        foreignKey: "postId",
+        sourceKey: "postId",
+      });
+      this.hasMany(models.like, {
+        foreignKey: "postId",
+        sourceKey: "postId",
+      });
     }
   }
-  Post.init({postId: {
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
-    type: DataTypes.INTEGER
-  },
+  Post.init({
+    postId: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     title: DataTypes.STRING,
     discription: DataTypes.STRING,
     url: DataTypes.STRING,
     like: DataTypes.INTEGER,
+    category:DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Post',
