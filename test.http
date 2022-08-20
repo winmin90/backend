@@ -1,0 +1,20 @@
+### 회원가입
+post http://localhost:8000/user/signup
+Content-Type: application/json
+
+{
+    "email": “test@naver.com”,
+    "userimage": ””,
+    "channel": ”테스트채널”,
+    "password": ”123456”,
+    "confirmPassword": ”123456”,
+}
+
+### 중복확인(이메일)
+post http://localhost:8000/user/check_id
+Content-Type: application/json
+
+{
+    "email": “test@naver.com”
+}
+
