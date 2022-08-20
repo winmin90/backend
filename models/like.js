@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Posts,{
+      this.belongsTo(models.Post,{
         foreignKey: "postId",
         targetKey: "postId",
       });
-      this.belongsTo(models.Users,{
+      this.belongsTo(models.User,{
         foreignKey: "channel",
         targetKey: "channel",
       });
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     }
   }, {
     sequelize,
