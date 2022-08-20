@@ -10,19 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Users,{
+      this.belongsTo(models.User,{
         foreignKey: "channel",
         targetKey: "channel",
     });
-    this.belongsTo(models.Users,{
+    this.belongsTo(models.User,{
       foreignKey: "userimage",
       targetKey: "userimage",
   });
-  this.hasMany(models.Comments,{
+  this.hasMany(models.Comment,{
     foreignKey: "postId",
     sourceKey: "postId",
 });
-  this.hasMany(models.Likes,{
+  this.hasMany(models.like,{
     foreignKey: "postId",
     sourceKey: "postId",
 });
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER
+    type: DataTypes.INTEGER
   },
     title: DataTypes.STRING,
     discription: DataTypes.STRING,
