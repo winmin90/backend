@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { Comment } = require("../models");
 const { Post } = require("../models");
+// const { User } = ruquire("../models");
 
 //const authMiddleware = require("../middlewares/auth-middleware");
 
@@ -91,9 +92,9 @@ router.put("/:commentId",  async(req, res) => {
     }
     //로그인한 유저가 댓글 작성자가 아니면 수정을 못함
     // const { user } = await res.locals;
-    if( user.channel != comments.channel ) {
-      return res.json({ message: "수정 권한이 없습니다."});
-    }
+    // if( user.channel != comments.channel ) {
+    //   return res.json({ message: "수정 권한이 없습니다."});
+    // }
     await Comment.update({ comment }, { where: {commentId} });
     res.json({message: "댓글을 수정하였습니다."});
   }catch(error){
