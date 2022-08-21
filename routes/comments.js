@@ -3,12 +3,12 @@ const router = express.Router();
 
 const { Comment } = require("../models");
 const { Post } = require("../models");
-// const { User } = ruquire("../models");
+const { User } = require("../models");
 
-//const authMiddleware = require("../middlewares/auth-middleware");
+const authMiddleware = require("../middleware/auth-middleware");
 
 //댓글 작성 post('/comments/postId')
-router.post("/:postId", async (req, res) => {
+router.post("/:postId", authMiddleware, async (req, res) => {
   try{
   const { postId } = req.params;
   const { comment } = req.body;
@@ -20,13 +20,13 @@ router.post("/:postId", async (req, res) => {
   if(!posts) {
     return res.json({ message: "해당 게시글이 없습니다." });
   }
-  // const { user } = await res.locals;
+  const { user } = await res.locals;
   
   await Comment.create({ 
     postId,
-    // user: user.userId,
-    // channel: user.channel,
-    // userimage: user.userimage,
+    user: user.userId,
+    channel: user.channel,
+    userimage: user.userimage,
     comment,
   });
   res.status(201).json({
@@ -34,7 +34,7 @@ router.post("/:postId", async (req, res) => {
   message: "댓글을 생성하였습니다."});
   }catch (error){
   const message = `${req.method} ${req.originalUrl} : ${error.message}`;
-  consoel.log(message);
+  console.log(message);
   res.status(400).json({ message });
   }
   });
@@ -76,7 +76,7 @@ router.get("/:postId", async (req, res) => {
   }  
 });
 //댓글 수정 api with put ('/comment/commentId')
-router.put("/:commentId",  async(req, res) => {
+router.put("/:commentId", authMiddleware, async(req, res) => {
   try{
     const { commentId } = req.params;
 
@@ -91,20 +91,20 @@ router.put("/:commentId",  async(req, res) => {
       return res.json({ message: "댓글 내용을 입력해주세요." })
     }
     //로그인한 유저가 댓글 작성자가 아니면 수정을 못함
-    // const { user } = await res.locals;
-    // if( user.channel != comments.channel ) {
-    //   return res.json({ message: "수정 권한이 없습니다."});
-    // }
+    const { user } = await res.locals;
+    if( user.channel != comments.channel ) {
+      return res.json({ message: "수정 권한이 없습니다."});
+    }
     await Comment.update({ comment }, { where: {commentId} });
     res.json({message: "댓글을 수정하였습니다."});
   }catch(error){
     const message = `${req.method} ${req.originalUrl} : ${error.message}`;
-    consoel.log(message);
+    console.log(message);
     res.status(400).json({ message });
   }
 });
 //게시글 삭제 api with delete ('/comment/commentId')
-router.delete("/:commentId",  async(req, res) => {
+router.delete("/:commentId", authMiddleware, async(req, res) => {
   try{
     const {commentId} = req.params;
 
@@ -114,7 +114,7 @@ router.delete("/:commentId",  async(req, res) => {
       return res.json({ message: " 해당 댓글이 없습니다." });
     }
     //로그인한 유저가 댓글 작성자가 아니면 삭제를 못함
-    // const { user } = await res.locals;
+    const { user } = await res.locals;
 
     if(user.channel != comments.channel){
       return res.json({message: "삭제 권한이 없습니다."});
@@ -124,7 +124,7 @@ router.delete("/:commentId",  async(req, res) => {
     }
   }catch(error){
     const message = `${req.method} ${req.originalUrl} : ${error.message}`;
-    consoel.log(message);
+    console.log(message);
     res.status(400).json({ message });
   }
 });
