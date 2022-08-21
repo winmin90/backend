@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 
 module.exports = (req, res, next) => {
-  const token = req.cookies;
+  const { token } = req.cookies;
   console.log("토큰 확인", token);
 
   if (!token) {
@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
 
   try {
     const { userId } = jwt.verify(token, process.env.mySecretKey); // userId 는 jwt.sign(userId : user._id)의 user._id가 할당된다.
-
+    console.log(userId);
     User.findByPk(userId).then((user) => {
       res.locals.user = user;
       next();
